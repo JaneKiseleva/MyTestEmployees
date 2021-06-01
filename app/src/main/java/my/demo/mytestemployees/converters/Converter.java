@@ -1,9 +1,7 @@
 package my.demo.mytestemployees.converters;
 
 import androidx.room.TypeConverter;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +16,12 @@ public class Converter {
 
     @TypeConverter
     public List<Speciality> stringToListSpecialty(String specialitiesAsString) {
-        Gson gson = new Gson();
-        ArrayList objects = gson.fromJson(specialitiesAsString, ArrayList.class);
+//        Gson gson = new Gson();
+//        ArrayList objects = gson.fromJson(specialitiesAsString, ArrayList.class);
         ArrayList<Speciality> specialties = new ArrayList<>();
-        for (Object o : objects) {
-            specialties.add(gson.fromJson(o.toString(), Speciality.class));
-        }
+//        for (Object o : objects) {
+//            specialties.add(gson.fromJson(o.toString(), Speciality.class));
+//        }
         return specialties;
     }
 }

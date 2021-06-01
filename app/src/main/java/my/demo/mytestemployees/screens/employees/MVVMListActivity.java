@@ -68,7 +68,7 @@ public class MVVMListActivity extends AppCompatActivity {
     public String showDescription(View view) {
         int position = spinnerSpeciality.getSelectedItemPosition(); //Нашли индекс выбранного цвета
         return getDescriptionByPosition(position);
-        //adapter.getItemCount(description);
+        //view.(description);
     }
 
     private String getDescriptionByPosition (int position) {

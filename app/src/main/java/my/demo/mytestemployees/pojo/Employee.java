@@ -1,7 +1,10 @@
 package my.demo.mytestemployees.pojo;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
+import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -11,13 +14,19 @@ import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import my.demo.mytestemployees.converters.Converter;
 
-import retrofit2.Converter;
 
 @Entity(tableName = "employees")
-@TypeConverters(value = Converter.class)
+@TypeConverters (value = Converter.class)
 public class Employee {
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -45,71 +54,40 @@ public class Employee {
     }
 
 
-
 //    public int getAge() {
 //        return calculateAge(birthday);
 //    }
 
 
-//    public static String formatdate(String birthday) {
-//        final List<String> dateFormats = Arrays.asList("yyyy-MM-dd", "dd-MM-yyyy", "MM-dd-yyyy", "");
-//        SimpleDateFormat sdf;
-//        final String RU_FORMAT = "dd.MM.yyyy";
-//        String output = "-";
-//        for (String format : dateFormats) {
-//            sdf = new SimpleDateFormat(format, new Locale("ru"));
-//            sdf.setLenient(false);
-//            try {
-//                if (sdf.parse(birthday) != null) {
-//                    Date date = sdf.parse(birthday);
-//                    sdf.applyPattern(RU_FORMAT);
-//                    return sdf.format(date);
-//                }
-//                break;
-//            } catch (ParseException e) {
-//
-//            }
-//        }
-//        return output;
-//    }
-//    public String formatdate (String birthday) {
-//        if (birthday == null) {
-//            return "-";
-//        } else {
-//            @SuppressLint("SimpleDateFormat") SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-//            Date date = null;
-//            try {
-//                date = fmt.parse(birthday);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @SuppressLint("SimpleDateFormat") SimpleDateFormat fmtOut = new SimpleDateFormat("dd.MM.yyyy" + " г.");
-//            return fmtOut.format(date);
-//        }
-//    }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public String formatdate (String birthday) {
         if (birthday == null || birthday.isEmpty()) {
             return "-";
-        } else {
-
-            String inputPattern1 = "yyyy-MM-dd";
-            String outputPattern = "dd.MM.yyyy" + " г.";
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern1);
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
-            Date date = null;
-            String str = null;
-
-            try {
-                date = inputFormat.parse(birthday);
-                str = outputFormat.format(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return str;
         }
+        String str = null;
+
+        final List<String> dateFormats = Arrays.asList("yyyy-MM-dd", "dd-MM-yyyy", "MM-dd-yyyy");
+        String outputPattern = "dd.MM.yyyy" + " г.";
+        LocalDate date = null;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        for (String inputPattern: dateFormats) {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+            try {
+                date = LocalDate.parse(
+                        birthday,
+                        DateTimeFormatter.ofPattern( inputPattern )
+                );
+            } catch (DateTimeParseException e) {
+                continue;
+            }
+        }
+        if (date == null) {
+            return "-";
+        }
+        DateTimeFormatter f = DateTimeFormatter.ofPattern(outputPattern);
+        return date.format(f);
     }
 
 
@@ -142,6 +120,7 @@ public class Employee {
 //
 //        return age;
 //    }
+
 
 //    public static int getAge(String birthday) {
 //

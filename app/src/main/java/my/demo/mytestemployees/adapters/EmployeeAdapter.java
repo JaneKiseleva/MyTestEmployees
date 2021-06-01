@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 
 import my.demo.mytestemployees.R;
@@ -42,10 +44,11 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder employeeViewHolder, int position) {
         Employee employee = employees.get(position);
-        Speciality specialtyId = specialties.get(position);
+//        Speciality specialtyId = specialties.get(position);
         employeeViewHolder.textViewName.setText(employee.getName().substring(0, 1).toUpperCase() + employee.getName().substring(1));
         employeeViewHolder.textViewLastName.setText(employee.getLName().substring(0, 1).toUpperCase() + employee.getLName().substring(1));
         employeeViewHolder.textViewBirthday.setText(employee.getFormattedDate());
+        //employeeViewHolder.textViewBirthday.setText(employee.getSpeciality());
 
 
 //        if (employeeViewHolder.textViewSpeciality != null) {

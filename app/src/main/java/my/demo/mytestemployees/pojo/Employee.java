@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -15,13 +17,14 @@ import com.google.gson.annotations.SerializedName;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
 import my.demo.mytestemployees.converters.Converter;
 
 
@@ -39,6 +42,9 @@ public class Employee {
     @SerializedName("birthday")
     @Expose
     private String birthday;
+
+    @Expose(serialize = false)
+    @Ignore private LocalDate birthdayDate;
     @SerializedName("avatr_url")
     @Expose
     private String avatrUrl;
@@ -50,7 +56,11 @@ public class Employee {
     private List<Speciality> speciality = null;
 
     public String getFormattedDate() {
-        return formatdate(birthday);
+        if(this.getBirthdayDate() == null) {
+            return "-";
+        }
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd.MM.yyyy" + " г.");
+        return this.getBirthdayDate().format(f);
     }
 
 
@@ -58,22 +68,15 @@ public class Employee {
 //        return calculateAge(birthday);
 //    }
 
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String formatdate (String birthday) {
+    public LocalDate formatdate (String birthday) {
         if (birthday == null || birthday.isEmpty()) {
-            return "-";
+            return null;
         }
-        String str = null;
 
         final List<String> dateFormats = Arrays.asList("yyyy-MM-dd", "dd-MM-yyyy", "MM-dd-yyyy");
-        String outputPattern = "dd.MM.yyyy" + " г.";
         LocalDate date = null;
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
         for (String inputPattern: dateFormats) {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
             try {
                 date = LocalDate.parse(
                         birthday,
@@ -83,11 +86,8 @@ public class Employee {
                 continue;
             }
         }
-        if (date == null) {
-            return "-";
-        }
-        DateTimeFormatter f = DateTimeFormatter.ofPattern(outputPattern);
-        return date.format(f);
+
+        return date;
     }
 
 
@@ -122,36 +122,16 @@ public class Employee {
 //    }
 
 
-//    public static int getAge(String birthday) {
-//
-//        int age = 0;
-//        try {
-//            DateTimeFormatter date1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//            Calendar now = Calendar.getInstance();
-//            Calendar old = Calendar.getInstance();
-//            old.setTime(date1);
-//            if (old.after(now)) {
-//                throw new IllegalArgumentException("Can't be born in the future");
-//            }
-//            int year1 = now.get(Calendar.YEAR);
-//            int year2 = old.get(Calendar.YEAR);
-//            age = year1 - year2;
-//            int month1 = now.get(Calendar.MONTH);
-//            int month2 = old.get(Calendar.MONTH);
-//            if (month2 > month1) {
-//                age--;
-//            } else if (month1 == month2) {
-//                int day1 = now.get(Calendar.DAY_OF_MONTH);
-//                int day2 = old.get(Calendar.DAY_OF_MONTH);
-//                if (day2 > day1) {
-//                    age--;
-//                }
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return age;
-//    }
+    public java.lang.Integer getAge() {
+        if(this.getBirthdayDate() == null) {
+            return null;
+        }
+
+        return Period.between(
+                this.getBirthdayDate(),
+                LocalDate.now()
+        ).getYears();
+    }
 
 //    public int getAge (Date birthday) {
 //        GregorianCalendar today = new GregorianCalendar();
@@ -201,6 +181,15 @@ public class Employee {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+//    public void setBirthdayDate() {
+//        this.birthdayDate = formatdate(this.birthday);
+//    }
+
+    public LocalDate getBirthdayDate() {
+        return formatdate(this.birthday);
+        //return birthdayDate;
     }
 
     public String getAvatrUrl() {

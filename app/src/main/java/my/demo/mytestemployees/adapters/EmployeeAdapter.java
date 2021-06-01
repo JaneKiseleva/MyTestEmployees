@@ -48,6 +48,12 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         employeeViewHolder.textViewName.setText(employee.getName().substring(0, 1).toUpperCase() + employee.getName().substring(1));
         employeeViewHolder.textViewLastName.setText(employee.getLName().substring(0, 1).toUpperCase() + employee.getLName().substring(1));
         employeeViewHolder.textViewBirthday.setText(employee.getFormattedDate());
+        java.lang.Integer age = employee.getAge();
+        String ageString = "-";
+        if(age != null) {
+            ageString = String.valueOf(age);
+        }
+        employeeViewHolder.textViewOld.setText(ageString);
         //employeeViewHolder.textViewBirthday.setText(employee.getSpeciality());
 
 

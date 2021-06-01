@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MyTestEmployees</string>
+    <string name="label_name">Имя:</string>
+    <string name="label_last_name">Фамилия:</string>
+    <string name="birthday">Дата рождения:</string>
+    <string name="detail">Подробнее</string>
+    <string name="old">Возраст:</string>
+    <string name="speciality">Специальность:</string>
+    <string name="spec_id_prefix">ID: %1$s</string>
+    <string name="button_find_description">Искать по специальности</string>
+    <string-array name="speciality">
+        <item>Менеджер</item>
+        <item>Разработчик</item>
+    </string-array>
+</resources>

@@ -27,4 +27,7 @@ public interface SpecialityOfEmployeeDao {
     @Delete
     void delete(Speciality specialty);
 
+    @Query("DELETE FROM specialty")
+    void deleteAll();
+
 }

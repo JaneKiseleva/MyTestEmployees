@@ -7,8 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import my.demo.mytestemployees.pojo.Employee;
+import my.demo.mytestemployees.pojo.Speciality;
 
-@Database(entities = {Employee.class}, version = 2, exportSchema = false)
+@Database(entities = {Employee.class, Speciality.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "employees.db";
@@ -25,4 +26,6 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract EmployeeDao employeeDao();
+
+    public abstract SpecialityOfEmployeeDao specialityOfEmployeeDao();
 }

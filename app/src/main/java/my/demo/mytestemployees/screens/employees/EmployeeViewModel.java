@@ -2,13 +2,18 @@ package my.demo.mytestemployees.screens.employees;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -20,6 +25,7 @@ import my.demo.mytestemployees.api.ApiService;
 import my.demo.mytestemployees.data.AppDatabase;
 import my.demo.mytestemployees.pojo.Employee;
 import my.demo.mytestemployees.pojo.EmployeeResponse;
+import my.demo.mytestemployees.pojo.Speciality;
 
 public class EmployeeViewModel extends AndroidViewModel {
 
@@ -58,6 +64,13 @@ public class EmployeeViewModel extends AndroidViewModel {
         protected Void doInBackground(List<Employee>... lists) {
             if (lists != null && lists.length > 0) {
                 db.employeeDao().insertEmployees(lists[0]);
+
+                lists[0].forEach(c -> {
+                    c.getSpecialities().forEach(s -> {
+                        db.specialityOfEmployeeDao().insert(s);
+                    });
+                });
+
             }
             return null;
         }
@@ -67,10 +80,22 @@ public class EmployeeViewModel extends AndroidViewModel {
         new DeleteAllEmployeesTask().execute();
     }
 
+    private void deleteAllSpecialities() {
+        new DeleteAllSpecialitiesTask().execute();
+    }
+
     private static class DeleteAllEmployeesTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             db.employeeDao().deleteAllEmployees();
+            return null;
+        }
+    }
+
+    private static class DeleteAllSpecialitiesTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            db.specialityOfEmployeeDao().deleteAll();
             return null;
         }
     }
@@ -86,6 +111,7 @@ public class EmployeeViewModel extends AndroidViewModel {
                     @Override
                     public void accept(EmployeeResponse employeeResponse) throws Exception {
                         deleteAllEmployees();
+                        deleteAllSpecialities();
                         insertEmployees(employeeResponse.getEmployees());
                     }
                 }, new Consumer<Throwable>() {

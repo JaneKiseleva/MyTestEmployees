@@ -14,11 +14,11 @@ import my.demo.mytestemployees.pojo.Speciality;
 @Dao
 public interface SpecialityOfEmployeeDao {
 
-    @Query("SELECT * FROM speciality")
+    @Query("SELECT * FROM specialty")
     List<Speciality> getAllSpecialty();
 
     @Transaction
-    @Query("SELECT * FROM speciality WHERE specialityId = :employeeId")
+    @Query("SELECT * FROM specialty WHERE specialtyId = :employeeId")
     List<Speciality> findSpecialtiesForEmployee(long employeeId);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

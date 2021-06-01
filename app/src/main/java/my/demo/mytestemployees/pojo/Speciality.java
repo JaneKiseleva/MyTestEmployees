@@ -5,21 +5,21 @@ import androidx.room.Entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "speciality")
+@Entity(tableName = "specialty")
 public class Speciality {
-    @SerializedName("speciality_id")
+    @SerializedName("specialty_id")
     @Expose
-    private int specialityId;
+    private int specialtyId;
     @SerializedName("name")
     @Expose
     private String name;
 
-    public int getSpecialityId() {
-        return specialityId;
+    public int getSpecialtyId() {
+        return specialtyId;
     }
 
     public void setSpecialtyId(int specialtyId) {
-        this.specialityId = specialityId;
+        this.specialtyId = specialtyId;
     }
 
     public String getName() {

@@ -8,8 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
 
 import my.demo.mytestemployees.R;
@@ -44,7 +42,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder employeeViewHolder, int position) {
         Employee employee = employees.get(position);
-//        Speciality specialtyId = specialties.get(position);
         employeeViewHolder.textViewName.setText(employee.getName().substring(0, 1).toUpperCase() + employee.getName().substring(1));
         employeeViewHolder.textViewLastName.setText(employee.getLName().substring(0, 1).toUpperCase() + employee.getLName().substring(1));
         employeeViewHolder.textViewBirthday.setText(employee.getFormattedDate());
@@ -54,29 +51,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
             ageString = String.valueOf(age);
         }
         employeeViewHolder.textViewOld.setText(ageString);
-        //employeeViewHolder.textViewBirthday.setText(employee.getSpeciality());
-
-
-//        if (employeeViewHolder.textViewSpeciality != null) {
-//            employeeViewHolder.textViewSpeciality.setText(specialtyId.getName());
-//        } else {
-//            employeeViewHolder.textViewSpeciality.setText("");
-//        }
-
-
-//        for (Employee employeeAll : employees) {
-//            List<Specialty> specialties = employee.getSpecialty();
-//            employeeViewHolder.textViewSpeciality.setText(specialties(getItemId(0)));
-//
-//employeeViewHolder.textViewSpeciality.setText(employee.setSpecialty(List<SpecialityOfEmployee>);
-
-        //        if (employee.getAge() == 0) {
-//            employeeViewHolder.textViewOld.setText("-");
-//        } else {
-//            employeeViewHolder.textViewOld.setText(employee.getAge());
-//        }
-//        employeeViewHolder.textViewOld.setText(String.valueOf(employee.getAge()));
-
+        employeeViewHolder.textViewSpeciality.setText(employee.getSpecialityNames());
 
     }
 

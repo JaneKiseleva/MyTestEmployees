@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -43,9 +44,9 @@ public class MVVMListActivity extends AppCompatActivity {
                 adapter.setEmployees(employees);
                 if (employees != null) {
                     for (Employee employee : employees) {
-                        List<Speciality> specialties = employee.getSpeciality();
+                        List<Speciality> specialties = employee.getSpecialities();
                         for (Speciality speciality : specialties) {
-                            speciality.getName();
+                            Log.i ("Name",speciality.getName());
                             //specialtyDao.findSpecialtiesForEmployee
 
                         }

@@ -1,29 +1,23 @@
 package my.demo.mytestemployees.pojo;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import my.demo.mytestemployees.converters.Converter;
 
@@ -48,12 +42,9 @@ public class Employee {
     @SerializedName("avatr_url")
     @Expose
     private String avatrUrl;
-    //    @SerializedName ("age")
-//    @Expose
-//    private int age;
-    @SerializedName("speciality")
+    @SerializedName("specialty")
     @Expose
-    private List<Speciality> speciality = null;
+    private List<Speciality> specialities = null;
 
     public String getFormattedDate() {
         if(this.getBirthdayDate() == null) {
@@ -63,10 +54,6 @@ public class Employee {
         return this.getBirthdayDate().format(f);
     }
 
-
-//    public int getAge() {
-//        return calculateAge(birthday);
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public LocalDate formatdate (String birthday) {
@@ -90,38 +77,6 @@ public class Employee {
         return date;
     }
 
-
-//    public static int calculateAge (String birthday) {
-//        int age = 0;
-//        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-//        Date date = null;
-//        try {
-//            date = sdf.parse(birthday);
-//        } catch (ParseException e) {
-//        }
-//        if (date == null) return 0;
-//
-//        Calendar birthdayDate = Calendar.getInstance();
-//        Calendar today = Calendar.getInstance();
-//
-//        birthdayDate.setTime(date);
-//
-//        int year = birthdayDate.get(Calendar.YEAR);
-//        int month = birthdayDate.get(Calendar.MONTH);
-//        int day = birthdayDate.get(Calendar.DAY_OF_MONTH);
-//
-//        birthdayDate.set(year, month + 1, day);
-//
-//        age = today.get(Calendar.YEAR) - birthdayDate.get(Calendar.YEAR);
-//
-//        if (today.get(Calendar.DAY_OF_YEAR) < birthdayDate.get(Calendar.DAY_OF_YEAR)) {
-//            age--;
-//        }
-//
-//        return age;
-//    }
-
-
     public java.lang.Integer getAge() {
         if(this.getBirthdayDate() == null) {
             return null;
@@ -132,24 +87,6 @@ public class Employee {
                 LocalDate.now()
         ).getYears();
     }
-
-//    public int getAge (Date birthday) {
-//        GregorianCalendar today = new GregorianCalendar();
-//        GregorianCalendar bday = new GregorianCalendar();
-//        GregorianCalendar bdayThisYear = new GregorianCalendar();
-//
-//        bday.setTime(birthday);
-//        bdayThisYear.setTime(birthday);
-//        bdayThisYear.set(Calendar.YEAR, today.get(Calendar.YEAR));
-//
-//        int age = today.get(Calendar.YEAR) - bday.get(Calendar.YEAR);
-//
-//        if(today.getTimeInMillis() < bdayThisYear.getTimeInMillis())
-//            age--;
-//
-//        return age;
-//    }
-
 
     public int getId() {
         return id;
@@ -204,14 +141,16 @@ public class Employee {
     //    public void setAge(int age) {
 //        this.age = age;
 //    }
-    public List<Speciality> getSpeciality() {
-        return speciality;
+    public List<Speciality> getSpecialities() {
+        return specialities;
     }
 
-    public void setSpeciality(List<Speciality> speciality) {
-        this.speciality = speciality;
+    public void setSpecialities(List<Speciality> specialities) {
+        this.specialities = specialities;
     }
 
-
+    public String getSpecialityNames() {
+        return specialities.stream().map(s -> s.getName()).collect(Collectors.joining(", "));
+    }
 }
 
